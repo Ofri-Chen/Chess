@@ -1,0 +1,8 @@
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\obj\Debug\Chess.csprojResolveAssemblyReference.cache
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\bin\Debug\Chess.exe.config
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\bin\Debug\Chess.exe
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\bin\Debug\Chess.pdb
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\bin\Debug\Core.dll
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\bin\Debug\Core.pdb
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\obj\Debug\Chess.exe
+c:\users\ofric\documents\visual studio 2017\Projects\Chess\Chess\obj\Debug\Chess.pdb
