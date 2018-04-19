@@ -48,7 +48,7 @@ namespace Chess
             {
                 for (int j = 0; j < COLS; j++)
                 {
-                    Board[i][j] = CreatePiece(boardStr[i * 8 + j], new Point(i, j));
+                    Board[i][j] = CreatePiece(boardStr[i * 8 + j], new Point(j, i));
                 }
             }
             
