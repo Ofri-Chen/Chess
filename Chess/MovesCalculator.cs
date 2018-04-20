@@ -29,6 +29,28 @@ namespace Chess
                 .Concat(GetLinePossibleMoves(piece, board, 1, -1))
                 .ToArray();
         }
+        public static Point[] OneSquareToAnyDirection(Piece piece, Piece[][] board)
+        {
+            var pos = piece.Position;
+
+            var possibleSquares = GetSurroundingPositions(new Point(pos.X, pos.Y + 1), 1, 0)
+                .Concat(GetSurroundingPositions(new Point(pos.X, pos.Y), 1, 0))
+                .Concat(GetSurroundingPositions(new Point(pos.X, pos.Y - 1), 1, 0))
+                .Concat(GetSurroundingPositions(new Point(pos.X, pos.Y), 0, 1));
+
+            return possibleSquares.Where(square => board.At(square)?.Player != piece.Player).ToArray();
+        }
+
+        private static IEnumerable<Point> GetSurroundingPositions(Point point, int xIncrementor, int yIncrementor)
+        {
+            var points = new Point[]
+            {
+                new Point(point.X + xIncrementor, point.Y + yIncrementor),
+                new Point(point.X - xIncrementor, point.Y - yIncrementor)
+            };
+
+            return points.Where(surroundingPoint => ChessUtils.IsValidPosition(surroundingPoint));
+        }
 
 
         private static IEnumerable<Point> GetLinePossibleMoves(Piece piece, Piece[][] board,

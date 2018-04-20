@@ -13,13 +13,14 @@ namespace Chess
         static void Main(string[] args)
         {
             //var boardStr = "qkrrnnbbPPPPPPPP################################ppppppppQKRRNNBB0";
-            var boardStr = "###################rKQr#########################################0";
+            var boardStr = "#####k#############rQKr#########################################0";
 
             var startingPlayer = Utils.TryParseToEnum<PlayerTypes>(int.Parse(boardStr[64].ToString()));
 
             var a = new string(boardStr.Take(Configuration.ROWS * Configuration.COLS).ToArray());
             var gameManager = new GameManager(a);
-            gameManager.PrintBoard();
+
+            var res = gameManager.MovePiece("d3e3");
         }
     }
 }

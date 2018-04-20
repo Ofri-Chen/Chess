@@ -19,6 +19,7 @@ namespace Chess
                 InitBoard();
                 InitValidations();
                 Board = Parser.CreateBoard(Board, boardStr);
+                PrintBoard();
             }
 
             public Statuses MovePiece(string moveStr)
@@ -36,14 +37,14 @@ namespace Chess
                 var otherPlayer = GetOtherPlayer(CurrPlayer);
                 var rows = Board.SelectMany(row => row);
 
-                var otherPlayerPiecesMovesDic = rows.Where(piece => piece.Player == otherPlayer)
+                var otherPlayerPiecesMovesDic = rows.Where(piece => piece?.Player == otherPlayer)
                     .ToDictionary(piece => piece, piece => piece.GetPossibleMoves(Board));
                 var possibleMoves = GetPossibleMoves(rows, CurrPlayer);
 
 
-                if (IsPlayerChecked(otherPlayer, rows, otherPlayerPiecesMovesDic.SelectMany(dic => dic.Value)))
+                if (IsPlayerChecked(otherPlayer, rows, possibleMoves))
                 {
-                    return IsPlayerCheckmated(otherPlayer, rows, otherPlayerPiecesMovesDic, possibleMoves)
+                    return IsPlayerCheckmated(otherPlayer, rows, otherPlayerPiecesMovesDic)
                         ? Statuses.Valid_Checkmate
                         : Statuses.Valid_Check;
                 }
@@ -74,13 +75,13 @@ namespace Chess
             {
                 var enemy = GetOtherPlayer(player);
                 enemyPossibleMoves = enemyPossibleMoves ?? GetPossibleMoves(rows, enemy);
-                var kingPos = rows.First(piece => (piece.GetType() == typeof(King) && piece.Player == player));
+                var kingPos = rows.First(piece => (piece?.GetType() == typeof(King) && piece?.Player == player)).Position;
 
                 return enemyPossibleMoves.Any(possibleMove => possibleMove.Equals(kingPos));
             }
 
             public bool IsPlayerCheckmated(PlayerTypes player, IEnumerable<Piece> rows,
-                Dictionary<Piece, Point[]> piecesMovesDic, IEnumerable<Point> enemyPossibleMoves)
+                Dictionary<Piece, Point[]> piecesMovesDic)
             {
                 foreach (var piece in piecesMovesDic)
                 {
@@ -92,17 +93,18 @@ namespace Chess
                         ChangePiecePos(Board.At(oldPos), newPos);
                         Board[oldPos.Y][oldPos.X] = null;
 
+                        var enemyPossibleMoves = GetPossibleMoves(rows, CurrPlayer);
                         var isPlayerChecked = IsPlayerChecked(player, rows, enemyPossibleMoves);
 
                         //Restore old board
                         ChangePiecePos(Board.At(newPos), oldPos);
                         Board[newPos.Y][newPos.X] = destPiece;
 
-                        if (isPlayerChecked) return true;
+                        if (!isPlayerChecked) return false;
                     }
                 }
 
-                return false;
+                return true;
             }
 
             #region Initialize
@@ -168,7 +170,7 @@ namespace Chess
             }
             private Point[] GetPossibleMoves(IEnumerable<Piece> rows, PlayerTypes player)
             {
-                return rows.Where(piece => piece.Player == player)
+                return rows.Where(piece => piece?.Player == player)
                     .SelectMany(piece => piece.GetPossibleMoves(Board))
                     .ToArray();
             }

@@ -22,7 +22,11 @@ namespace Core
         public override int GetHashCode()
         {
             return PointEqualityComparer.Instance.GetHashCode(this);
+        }
 
+        public override string ToString()
+        {
+            return $"X: {X}, Y: {Y}";
         }
     }
 }
