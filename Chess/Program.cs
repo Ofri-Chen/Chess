@@ -1,28 +1,25 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core;
 using Chess.Pieces;
+using System.Collections.Generic;
+using System;
 
 namespace Chess
 {
-    class Program
+    partial class Program
     {
         static void Main(string[] args)
         {
             //var boardStr = "qkrrnnbbPPPPPPPP################################ppppppppQKRRNNBB0";
-            var boardStr = "###################r###############K############################0";
-
+            var boardStr = "###################rKQr#########################################0";
 
             var startingPlayer = Utils.TryParseToEnum<PlayerTypes>(int.Parse(boardStr[64].ToString()));
 
-            var a = new string(boardStr.Take(BoardManager.ROWS * BoardManager.COLS).ToArray());
-            var boardManager = new BoardManager(a);
-            boardManager.Print();
-
-
-            var possibleMoves = MovesCalculator.CalculateMoves(boardManager.Board[2][3], boardManager.Board, MovesCalculator.StraightLine, MovesCalculator.StraightLine);
+            var a = new string(boardStr.Take(Configuration.ROWS * Configuration.COLS).ToArray());
+            var gameManager = new GameManager(a);
+            gameManager.PrintBoard();
         }
     }
 }

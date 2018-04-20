@@ -15,16 +15,23 @@ namespace Chess
 
         public static Point[] StraightLine(Piece piece, Piece[][] board)
         {
-            return GetStraightLinePossibleMovesOnDirection(piece, board, 1, 0)
-                .Concat(GetStraightLinePossibleMovesOnDirection(piece, board, -1, 0))
-                .Concat(GetStraightLinePossibleMovesOnDirection(piece, board, 0, 1))
-                .Concat(GetStraightLinePossibleMovesOnDirection(piece, board, 0, -1))
+            return GetLinePossibleMoves(piece, board, 1, 0)
+                .Concat(GetLinePossibleMoves(piece, board, -1, 0))
+                .Concat(GetLinePossibleMoves(piece, board, 0, 1))
+                .Concat(GetLinePossibleMoves(piece, board, 0, -1))
+                .ToArray();
+        }
+        public static Point[] DiagonalLine(Piece piece, Piece[][] board)
+        {
+            return GetLinePossibleMoves(piece, board, 1, 1)
+                .Concat(GetLinePossibleMoves(piece, board, -1, 1))
+                .Concat(GetLinePossibleMoves(piece, board, -1, -1))
+                .Concat(GetLinePossibleMoves(piece, board, 1, -1))
                 .ToArray();
         }
 
 
-        #region StraightLine
-        private static IEnumerable<Point> GetStraightLinePossibleMovesOnDirection(Piece piece, Piece[][] board,
+        private static IEnumerable<Point> GetLinePossibleMoves(Piece piece, Piece[][] board,
             int loopXIncrementor, int loopYIncrementor)
         {
             ICollection<Point> possibleMoves = new List<Point>();
@@ -34,12 +41,13 @@ namespace Chess
                 throw new ArgumentException();
             }
 
-            int numOfIterations = GetStraightLineNumOfIterations(piece, loopXIncrementor, loopYIncrementor);
+            var iterator = 1;
 
-            for (int i = 1; i < numOfIterations + 1; i++)
+            while (ChessUtils.IsValidPosition(piece.Position.X + loopXIncrementor * iterator,
+                                  piece.Position.Y + loopYIncrementor * iterator))
             {
-                var xPos = piece.Position.X + loopXIncrementor * i;
-                var yPos = piece.Position.Y + loopYIncrementor * i;
+                var xPos = piece.Position.X + loopXIncrementor * iterator;
+                var yPos = piece.Position.Y + loopYIncrementor * iterator;
 
                 if (board[yPos][xPos] == null)
                 {
@@ -57,32 +65,10 @@ namespace Chess
                         break;
                     }
                 }
-            }
 
+                iterator++;
+            }
             return possibleMoves;
         }
-
-        private static int GetStraightLineNumOfIterations(Piece piece, int loopXIncrementor, int loopYIncrementor)
-        {
-            if (loopXIncrementor > 0)
-            {
-                return BoardManager.COLS - piece.Position.X - 1;
-            }
-            if (loopXIncrementor < 0)
-            {
-                return piece.Position.X;
-            }
-            if (loopYIncrementor > 0)
-            {
-                return BoardManager.ROWS - piece.Position.Y - 1;
-            }
-            if (loopYIncrementor < 0)
-            {
-                return piece.Position.Y;
-            }
-
-            return 0;
-        }
-        #endregion
     }
 }

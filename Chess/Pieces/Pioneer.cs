@@ -9,7 +9,7 @@ namespace Chess.Pieces
         public Pioneer(string pos, PlayerTypes player) : base(pos, player) { }
         public Pioneer(Point pos, PlayerTypes player) : base(pos, player) { }
 
-        public override IEnumerable<Point> GetPossibleMoves(Point[][] board)
+        public override Point[] GetPossibleMoves(Piece[][] board)
         {
             throw new NotImplementedException();
         }

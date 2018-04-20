@@ -20,6 +20,6 @@ namespace Chess.Pieces
             Player = player;
         }
 
-        public abstract IEnumerable<Point> GetPossibleMoves(Point[][] board);
+        public abstract Point[] GetPossibleMoves(Piece[][] board);
     }
 }

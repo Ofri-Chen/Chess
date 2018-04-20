@@ -9,9 +9,9 @@ namespace Chess.Pieces
         public Rock(string pos, PlayerTypes player) : base(pos, player) { }
         public Rock(Point pos, PlayerTypes player) : base(pos, player) { }
 
-        public override IEnumerable<Point> GetPossibleMoves(Point[][] board)
+        public override Point[] GetPossibleMoves(Piece[][] board)
         {
-            throw new NotImplementedException();
+            return MovesCalculator.CalculateMoves(this, board, MovesCalculator.StraightLine);
         }
     }
 }

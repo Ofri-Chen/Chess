@@ -39,5 +39,10 @@ namespace Core
 
             return enumValue;
         }
+
+        public static T At<T>(this T[][] array, Point pos)
+        {
+            return array[pos.Y][pos.X];
+        }
     }
 }
