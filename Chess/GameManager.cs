@@ -34,7 +34,7 @@ namespace Chess
                 Console.Clear();
                 PrintBoard();
 
-                var otherPlayer = GetOtherPlayer(CurrPlayer);
+                var otherPlayer = CurrPlayer.GetOtherPlayer();
                 var rows = Board.SelectMany(row => row);
 
                 var otherPlayerPiecesMovesDic = rows.Where(piece => piece?.Player == otherPlayer)
@@ -73,7 +73,7 @@ namespace Chess
 
             private bool IsPlayerChecked(PlayerTypes player, IEnumerable<Piece> rows, IEnumerable<Point> enemyPossibleMoves = null)
             {
-                var enemy = GetOtherPlayer(player);
+                var enemy = player.GetOtherPlayer();
                 enemyPossibleMoves = enemyPossibleMoves ?? GetPossibleMoves(rows, enemy);
                 var kingPos = rows.First(piece => (piece?.GetType() == typeof(King) && piece?.Player == player)).Position;
 
@@ -163,10 +163,6 @@ namespace Chess
             {
                 Board[newPos.Y][newPos.X] = piece;
                 piece.Position = newPos;
-            }
-            private static PlayerTypes GetOtherPlayer(PlayerTypes player)
-            {
-                return (((int)player) ^ 1).TryParseToEnum<PlayerTypes>();
             }
             private Point[] GetPossibleMoves(IEnumerable<Piece> rows, PlayerTypes player)
             {

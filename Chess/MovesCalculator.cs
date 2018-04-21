@@ -3,6 +3,7 @@ using Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Chess.Program;
 
 namespace Chess
 {
@@ -39,6 +40,52 @@ namespace Chess
                 .Concat(GetSurroundingPositions(new Point(pos.X, pos.Y), 0, 1));
 
             return possibleSquares.Where(square => board.At(square)?.Player != piece.Player).ToArray();
+        }
+        public static Point[] Knight(Piece piece, Piece[][] board)
+        {
+            var pos = piece.Position;
+
+            var possibleSquares = GetSurroundingPositions(new Point(pos.X, pos.Y + 2), 1, 0)
+                .Concat(GetSurroundingPositions(new Point(pos.X, pos.Y - 2), 1, 0))
+                .Concat(GetSurroundingPositions(new Point(pos.X + 2, pos.Y), 0, 1))
+                .Concat(GetSurroundingPositions(new Point(pos.X - 2, pos.Y), 0, 1));
+
+            return possibleSquares.Where(square => board.At(square)?.Player != piece.Player).ToArray();
+        }
+        public static Point[] Pioneer(Piece piece, Piece[][] board)
+        {
+            var piecePos = piece.Position;
+            ICollection<Point> possibleSquares = new List<Point>();
+            int playerModifier = piece.Player == PlayerTypes.White ? 1 : -1;
+
+
+            var tempPos = new Point(piecePos.X, piecePos.Y + 1 * playerModifier);
+            if (tempPos.IsValidPosition())
+            {
+                if (board.At(tempPos) == null)
+                {
+                    possibleSquares.Add(tempPos);
+                    tempPos = new Point(piecePos.X, piecePos.Y + 2 * playerModifier);
+                    if ((tempPos.IsValidPosition() && (board.At(tempPos) == null)) &&
+                        ((piecePos.Y == 1 && piece.Player == PlayerTypes.White) || (piecePos.Y == 6 && piece.Player == PlayerTypes.Black)))
+                    {
+                        possibleSquares.Add(tempPos);
+                    }
+                }
+
+                tempPos = new Point(piecePos.X + 1, piecePos.Y + 1 * playerModifier);
+                if (tempPos.IsValidPosition() && board.At(tempPos).Player == piece.Player.GetOtherPlayer())
+                {
+                    possibleSquares.Add(tempPos);
+                }
+                tempPos = new Point(piecePos.X - 1, piecePos.Y + 1 * playerModifier);
+                if (tempPos.IsValidPosition() &&  board.At(tempPos)?.Player == piece.Player.GetOtherPlayer())
+                {
+                    possibleSquares.Add(tempPos);
+                }
+            }
+
+            return possibleSquares.ToArray();
         }
 
         private static IEnumerable<Point> GetSurroundingPositions(Point point, int xIncrementor, int yIncrementor)

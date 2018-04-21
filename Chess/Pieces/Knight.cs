@@ -11,7 +11,7 @@ namespace Chess.Pieces
 
         public override Point[] GetPossibleMoves(Piece[][] board)
         {
-            throw new NotImplementedException();
+            return MovesCalculator.Knight(this, board);
         }
     }
 }

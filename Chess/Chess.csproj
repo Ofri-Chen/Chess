@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common.cs" />
+    <Compile Include="ChessUtils.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="MovesCalculator.cs" />
